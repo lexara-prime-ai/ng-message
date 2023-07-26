@@ -1,5 +1,5 @@
-import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver, OnInit, AfterViewInit } from '@angular/core';
-import { AngularMessageBoxComponent } from 'ng-message-box';
+import { Component, AfterViewInit } from '@angular/core';
+import { AngularMessageBoxService } from 'ng-message-box';
 
 
 @Component({
@@ -8,27 +8,11 @@ import { AngularMessageBoxComponent } from 'ng-message-box';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  @ViewChild('componentContainer', { read: ViewContainerRef }) componentContainer!: ViewContainerRef;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private ms: AngularMessageBoxService) { }
 
   ngAfterViewInit() {
-    if (this.componentContainer) {
-      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(AngularMessageBoxComponent);
-      this.componentContainer.clear();
-      const componentRef = this.componentContainer.createComponent(componentFactory);
-      // Assuming the MessageBoxComponent has an input property named 'message'
-      componentRef.instance.successMessage$ = 'Hello, this is a dynamic message!';
-    }
-
+    setTimeout(() => { this.ms.SHOW_SUCCESS_MESSAGE("My message..."); }, 2000);
   }
-
-
-
-
-  // Assuming the MessageBoxComponent has an output event named 'close'
-  // componentRef.instance.close.subscribe(() => {
-  //   // Handle the close event here
-  // });
 
 }
